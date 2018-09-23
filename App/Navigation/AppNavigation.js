@@ -1,6 +1,6 @@
 import React from 'react';
 import { TabNavigator, TabBarBottom  } from 'react-navigation';
-import CardScreenJs from '../Containers/CardScreenJs'
+import SwipeScreens from '../Containers/SwipingScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SettingScreen from '../Containers/SettingScreen';
 import SwipingScreen from '../Containers/SwipingScreen';
@@ -9,7 +9,6 @@ import styles from './Styles/NavigationStyles';
 import { Colors } from '../Themes';
 
 const PrimaryNav = TabNavigator(
-  CardScreenJs: { screen: CardScreenJs },
   {
     Nearby: { screen: SwipingScreen },
     Matches: { screen: ChatScreen },

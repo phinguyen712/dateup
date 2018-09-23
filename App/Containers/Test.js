@@ -10,7 +10,6 @@ export default class Test extends Component {
   render () {
     return (
       <Text>
-        HEy
       </Text>
     )
   }

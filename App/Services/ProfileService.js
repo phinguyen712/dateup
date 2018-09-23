@@ -1,5 +1,5 @@
 export default class ProfileService {
-  getUsersProfile = [
+  getProfiles = [
     {
       userName: 'Bob',
       height: '5.2',

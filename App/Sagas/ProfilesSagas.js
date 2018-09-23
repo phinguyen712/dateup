@@ -11,18 +11,15 @@
 *************************************************************/
 
 import { call, put } from 'redux-saga/effects'
-import ProfilesSagaActions from '../Redux/ProfilesSagaRedux'
+import { ProfilesSagaActions } from '../Sagas/ProfilesSagas'
 // import { ProfilesSagaSelectors } from '../Redux/ProfilesSagaRedux'
 
 export function * getProfilesSaga (api, action) {
   const { data } = action
-  // get current data from Store
-  // const currentData = yield select(ProfilesSagaSelectors.getData)
-  // make the call to the api
-  const response = yield call(api.getprofilesSaga, data)
+  const response = yield call(api.getProfiles, data)
 
   // success?
-  if (response.ok) {
+  if (response) {
     // You might need to change the response here - do this with a 'transform',
     // located in ../Transforms/. Otherwise, just pass the data back from the api.
     yield put(ProfilesSagaActions.profilesSagaSuccess(response.data))

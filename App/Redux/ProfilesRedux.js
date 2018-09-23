@@ -6,25 +6,26 @@ import Immutable from 'seamless-immutable';
 const { Types, Creators } = createActions({
   profilesRequest: ['data'],
   profilesSuccess: ['payload'],
-  profilesFailure: null
-})
+  profilesFailure: null,
+});
 
-export const ProfilesTypes = Types
-export default Creators
+export const ProfilesTypes = Types;
+export default Creators;
 
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
-  usersProfiles: null,
+  profilesList: null,
+  currentProfile: null,
   fetching: null,
   payload: null,
-  error: null
-})
+  error: null,
+});
 
 /* ------------- Selectors ------------- */
 
 export const ProfilesSelectors = {
-  getData: state => state.data
+  getData: state => state.data,
 }
 
 /* ------------- Reducers ------------- */

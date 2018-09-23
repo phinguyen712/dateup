@@ -48,5 +48,5 @@ export const failure = (state) =>
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.USER_REQUEST]: request,
   [Types.USER_SUCCESS]: success,
-  [Types.USER_FAILURE]: failure
+  [Types.USER_FAILURE]: failure,
 })

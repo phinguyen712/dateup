@@ -1,37 +1,37 @@
-import { createReducer, createActions } from 'reduxsauce'
-import Immutable from 'seamless-immutable'
+import { createReducer, createActions } from 'reduxsauce';
+import Immutable from 'seamless-immutable';
 
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  accountReduxRequest: ['data'],
+  accountReduxRequest: ['sessionnID'],
   accountReduxSuccess: ['payload'],
-  accountReduxFailure: null
+  accountReduxFailure: null,
 })
 
-export const AccountReduxTypes = Types
-export default Creators
+export const AccountReduxTypes = Types;
+export default Creators;
 
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
-  data: null,
+  account: null,
   fetching: null,
   payload: null,
-  error: null
+  error: null,
 })
 
 /* ------------- Selectors ------------- */
 
 export const AccountReduxSelectors = {
-  getData: state => state.data
-}
+  getData: state => state.account,
+};
 
 /* ------------- Reducers ------------- */
 
 // request the data from an api
-export const request = (state, { data }) =>
-  state.merge({ fetching: true, data, payload: null })
+export const request = (state, { account }) =>
+  state.merge({ fetching: true, account, payload: null });
 
 // successful api lookup
 export const success = (state, action) => {
@@ -46,7 +46,7 @@ export const failure = state =>
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
-  [Types.ACCOUNT_REDUX_REQUEST]: request,
-  [Types.ACCOUNT_REDUX_SUCCESS]: success,
-  [Types.ACCOUNT_REDUX_FAILURE]: failure
+  [Types.ACCOUNT_REQUEST]: request,
+  [Types.ACCOUNT_SUCCESS]: success,
+  [Types.ACCOUNT_FAILURE]: failure
 })
