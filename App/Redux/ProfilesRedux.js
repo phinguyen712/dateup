@@ -26,28 +26,27 @@ export const INITIAL_STATE = Immutable({
 
 export const ProfilesSelectors = {
   getData: state => state.data,
-}
+};
 
 /* ------------- Reducers ------------- */
 
 // request the data from an api
-export const request = (state, { data }) =>
-  state.merge({ fetching: true, data, payload: null })
+export const request = (state, { data }) => state.merge({ fetching: true, data, payload: null });
+
 
 // successful api lookup
 export const success = (state, action) => {
-  const { payload } = action
-  return state.merge({ fetching: false, error: null, payload })
-}
+  const { payload } = action;
+  return state.merge({ fetching: false, error: null, profilesList: payload });
+};
 
 // Something went wrong somewhere.
-export const failure = state =>
-  state.merge({ fetching: false, error: true, payload: null })
+export const failure = state => state.merge({ fetching: false, error: true, payload: 'test' });
 
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.PROFILES_REQUEST]: request,
   [Types.PROFILES_SUCCESS]: success,
-  [Types.PROFILES_FAILURE]: failure
-})
+  [Types.PROFILES_FAILURE]: failure,
+});

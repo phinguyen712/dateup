@@ -1,6 +1,6 @@
 import { takeLatest, all } from 'redux-saga/effects';
 import API from '../Services/Api';
-import { ProfileService } from '../Services';
+import ProfileService from '../Services/ProfileService';
 import FixtureAPI from '../Services/FixtureApi';
 import DebugConfig from '../Config/DebugConfig';
 
@@ -8,15 +8,14 @@ import DebugConfig from '../Config/DebugConfig';
 
 import { StartupTypes } from '../Redux/StartupRedux';
 import { GithubTypes } from '../Redux/GithubRedux';
-import { ProfilesReduxTypes } from '../Redux/ProfilesRedux';
-import { AccountReduxTypes } from '../Redux/AccountRedux';
+import { ProfilesTypes } from '../Redux/ProfilesRedux';
 
 
 /* ------------- Sagas ------------- */
 
 import { startup } from './StartupSagas';
 import { getUserAvatar } from './GithubSagas';
-import { profiles } from './ProfilesSagas'
+import getProfilesSaga from './ProfilesSagas';
 
 /* ------------- API ------------- */
 
@@ -31,9 +30,7 @@ export default function* root() {
     // some sagas only receive an action
     takeLatest(StartupTypes.STARTUP, startup),
 
-    takeLatest(ProfilesTypes.PROFILES_REQUEST, ProfileService),
-
-    takeLatest(AccountReduxTypes.ACCOUNT_REQUEST, ProfileService),
+    takeLatest(ProfilesTypes.PROFILES_REQUEST, getProfilesSaga, ProfileService),
 
     // some sagas receive extra parameters in addition to an action
     takeLatest(GithubTypes.USER_REQUEST, getUserAvatar, api),

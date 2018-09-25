@@ -25,7 +25,7 @@ export const INITIAL_STATE = Immutable({
 
 export const GithubSelectors = {
   selectAvatar: state => state.github.avatar
-}
+};
 
 /* ------------- Reducers ------------- */
 

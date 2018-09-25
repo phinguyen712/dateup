@@ -1,37 +1,47 @@
 import React, { Component } from 'react'
-import { ScrollView, Text, KeyboardAvoidingView } from 'react-native'
-import { ProfilesActions } from '../Redux/ProfilesRedux'
+import { ScrollView, Text, KeyboardAvoidingView, Button } from 'react-native'
+import ProfilesActions from '../Redux/ProfilesRedux'
 import { connect } from 'react-redux';
 import styles from './Styles/SettingsScreenStyle';
 
 class SettingsScreen extends Component {
-  componentWillMount() {
-    if(!this.props.profilesList) {
-      this.props.getProfiles(this.props.accountId)
+  constructor(props) {
+    super(props);
+    if (!props.profilesList) {
+      props.getProfiles();
+    }
+    
+  }
+
+  runstuff = () => {
+    this.props.getProfiles();
+  }
+
+  renderShit() {
+    if(this.props.profilesList) {
+      return this.props.profilesList[0].userName;
     }
   }
-  render () {
+
+  render() {
     return (
-      <ScrollView style={styles.container}>
-        <KeyboardAvoidingView behavior='position'>
-          <Text>SettingsScreen</Text>
-        </KeyboardAvoidingView>
-      </ScrollView>
-    )
+      <Text>
+        <Button title="test" onPress={this.runstuff}>test</Button>
+      </Text>
+    );
   }
 }
 
 const mapStateToProps = (state) => {
   return {
     profilesList: state.profiles.profilesList,
-    accountId: state.account.id
-  }
-}
+  };
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getProfiles: dispatch(ProfilesActions.getProfiles),
-  }
-}
+    getProfiles: () => dispatch(ProfilesActions.profilesRequest()),
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(SettingsScreen)

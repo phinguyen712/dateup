@@ -1,5 +1,5 @@
-export default class ProfileService {
-  getProfiles = [
+export default {
+  getUsersProfiles: () => [
     {
       userName: 'Bob',
       height: '5.2',
