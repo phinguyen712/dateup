@@ -54,7 +54,7 @@ class SwipingScreen extends Component {
     }
   }
 
-  handleDislikePress = () => {
+  handleLikePress = () => {
     this.props.likeProfile();
   }
 
@@ -63,7 +63,7 @@ class SwipingScreen extends Component {
       return (
         <ProfileInfo
           currentProfile={this.props.currentProfile}
-          handleDislikePress={this.handleDislikePress}
+          handleLikePress={this.handleLikePress}
         />
       );
     }

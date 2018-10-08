@@ -6,9 +6,9 @@ import Immutable from 'seamless-immutable';
 const { Types, Creators } = createActions({
   profilesRequest: ['data'],
   profilesSuccess: ['payload'],
-  profilesFailure: null,
+  failure: null,
   likeProfile: null,
-  nextProfile: null,
+  likeSuccess: null,
 });
 
 export const ProfilesTypes = Types;
@@ -31,41 +31,55 @@ export const ProfilesSelectors = {
   getData: state => state.data,
 };
 
-export const request = (state, { data }) => state.merge({ fetchingProfile: true, data });
+/* ------------- Helpers------------- */
 
-export const likeProfile = (state) => {
+const nextProfile = (state) => {
+  const { currentProfileIndex, profilesList } = state;
+  const newIndex = currentProfileIndex + 1;
 
-};
-
-export const nextProfile = (state) => {
-  if (state.currentProfile < state.profilesList.length) {
-    const nextProfileIndex = state.currentProfile + 1;
-    state.merge({ currentProfile: nextProfileIndex });
-  } else {
-    request();
+  if (currentProfileIndex < profilesList.length) {
+    return state.merge({
+      currentProfileIndex: newIndex,
+      currentProfile: profilesList[newIndex],
+    });
   }
+  return Creators.profilesRequest('userID');
 };
 
-export const success = (state, action) => {
+/* ------------- Reducer------------- */
+
+export const profileRequestReducer = state => state.merge({
+  fetchingProfile: true,
+});
+
+export const profileSuccessReducer = (state, action) => {
   const { payload } = action;
 
   return state.merge({
     fetching: false,
     error: null,
     profilesList: payload,
+    currentProfileIndex: 0,
     currentProfile: payload[state.currentProfileIndex],
   });
 };
 
-export const failure = state => state.merge({ fetching: false, error: true, payload: 'test' });
+export const failureReducer = state => state.merge({ fetching: false, error: true, payload: 'test' });
 
+export const likeRequestReducer = state => state.merge({
+  fetching: true, id: state.currentProfile.id,
+});
+
+export const likeSuccessReducer = (state) => {
+  return nextProfile(state);
+};
 
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
-  [Types.PROFILES_REQUEST]: request,
-  [Types.PROFILES_SUCCESS]: success,
-  [Types.PROFILES_FAILURE]: failure,
-  [Types.LIKE_PROFILE]: likeProfile,
-  [Types.NEXT_PROFILE]: nextProfile,
-});      
+  [Types.PROFILES_REQUEST]: profileRequestReducer,
+  [Types.PROFILES_SUCCESS]: profileSuccessReducer,
+  [Types.FAILURE]: failureReducer,
+  [Types.LIKE_PROFILE]: likeRequestReducer,
+  [Types.LIKE_SUCCESS]: likeSuccessReducer,
+});

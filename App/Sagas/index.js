@@ -15,7 +15,7 @@ import { ProfilesTypes } from '../Redux/ProfilesRedux';
 
 import { startup } from './StartupSagas';
 import { getUserAvatar } from './GithubSagas';
-import getProfilesSaga from './ProfilesSagas';
+import { getProfilesSaga, likeProfileSaga } from './ProfilesSagas';
 
 /* ------------- API ------------- */
 
@@ -29,10 +29,9 @@ export default function* root() {
   yield all([
     // some sagas only receive an action
     takeLatest(StartupTypes.STARTUP, startup),
-
-    takeLatest(ProfilesTypes.PROFILES_REQUEST, getProfilesSaga, ProfileService),
-
     // some sagas receive extra parameters in addition to an action
     takeLatest(GithubTypes.USER_REQUEST, getUserAvatar, api),
+    takeLatest(ProfilesTypes.PROFILES_REQUEST, getProfilesSaga, ProfileService),
+    takeLatest(ProfilesTypes.LIKE_PROFILE, likeProfileSaga, ProfileService),
   ]);
 }

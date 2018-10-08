@@ -4,7 +4,6 @@ import ProfilesActions from '../Redux/ProfilesRedux';
 
 export function* getProfilesSaga(api, action) {
   const { data } = action;
-
   const response = yield call(api.getUsersProfiles, data);
 
   // success?
@@ -18,16 +17,12 @@ export function* getProfilesSaga(api, action) {
 }
 
 export function* likeProfileSaga(api, action) {
-  const { data } = action;
+  const { id } = action;
+  const response = yield call(api.updateLikedProfile, id);
 
-  const response = yield call(api.getUsersProfiles, data);
-
-  // success?
   if (response) {
-    // You might need to change the response here - do this with a 'transform',
-    // located in ../Transforms/. Otherwise, just pass the data back from the api.
-    yield put(ProfilesActions.profilesSuccess(response));
+    yield put(ProfilesActions.likeSuccess());
   } else {
-    yield put(ProfilesActions.profilesFailure());
+    yield put(ProfilesActions.failure());
   }
 }
