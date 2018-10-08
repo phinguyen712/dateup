@@ -7,6 +7,8 @@ const { Types, Creators } = createActions({
   profilesRequest: ['data'],
   profilesSuccess: ['payload'],
   profilesFailure: null,
+  likeProfile: null,
+  nextProfile: null,
 });
 
 export const ProfilesTypes = Types;
@@ -17,7 +19,8 @@ export default Creators;
 export const INITIAL_STATE = Immutable({
   profilesList: null,
   currentProfile: null,
-  fetching: null,
+  currentProfileIndex: 0,
+  fetchingProfile: null,
   payload: null,
   error: null,
 });
@@ -28,20 +31,34 @@ export const ProfilesSelectors = {
   getData: state => state.data,
 };
 
-/* ------------- Reducers ------------- */
+export const request = (state, { data }) => state.merge({ fetchingProfile: true, data });
 
-// request the data from an api
-export const request = (state, { data }) => state.merge({ fetching: true, data, payload: null });
+export const likeProfile = (state) => {
 
-
-// successful api lookup
-export const success = (state, action) => {
-  const { payload } = action;
-  return state.merge({ fetching: false, error: null, profilesList: payload });
 };
 
-// Something went wrong somewhere.
+export const nextProfile = (state) => {
+  if (state.currentProfile < state.profilesList.length) {
+    const nextProfileIndex = state.currentProfile + 1;
+    state.merge({ currentProfile: nextProfileIndex });
+  } else {
+    request();
+  }
+};
+
+export const success = (state, action) => {
+  const { payload } = action;
+
+  return state.merge({
+    fetching: false,
+    error: null,
+    profilesList: payload,
+    currentProfile: payload[state.currentProfileIndex],
+  });
+};
+
 export const failure = state => state.merge({ fetching: false, error: true, payload: 'test' });
+
 
 /* ------------- Hookup Reducers To Types ------------- */
 
@@ -49,4 +66,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.PROFILES_REQUEST]: request,
   [Types.PROFILES_SUCCESS]: success,
   [Types.PROFILES_FAILURE]: failure,
-});
+  [Types.LIKE_PROFILE]: likeProfile,
+  [Types.NEXT_PROFILE]: nextProfile,
+});      

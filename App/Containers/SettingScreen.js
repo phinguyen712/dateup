@@ -8,28 +8,13 @@ import { connect } from 'react-redux'
 import styles from './Styles/SettingScreenStyle'
 
 class SettingScreen extends Component {
-  // constructor (props) {
-  //   super(props)
-  //   this.state = {}
-  // }
-
-  render () {
+  render() {
     return (
       <ScrollView style={styles.container}>
         <Text>SettingScreen Container</Text>
       </ScrollView>
-    )
+    );
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(SettingScreen)
+export default SettingScreen;
