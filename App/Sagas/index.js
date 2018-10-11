@@ -15,7 +15,7 @@ import { ProfilesTypes } from '../Redux/ProfilesRedux';
 
 import { startup } from './StartupSagas';
 import { getUserAvatar } from './GithubSagas';
-import { getProfilesSaga, likeProfileSaga } from './ProfilesSagas';
+import { getProfilesSaga, likeProfileSaga, dislikeProfileSaga } from './ProfilesSagas';
 
 /* ------------- API ------------- */
 
@@ -33,5 +33,6 @@ export default function* root() {
     takeLatest(GithubTypes.USER_REQUEST, getUserAvatar, api),
     takeLatest(ProfilesTypes.PROFILES_REQUEST, getProfilesSaga, ProfileService),
     takeLatest(ProfilesTypes.LIKE_PROFILE, likeProfileSaga, ProfileService),
+    takeLatest(ProfilesTypes.DISLIKE_PROFILE, dislikeProfileSaga, ProfileService),
   ]);
 }

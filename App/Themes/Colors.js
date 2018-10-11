@@ -24,6 +24,8 @@ const colors = {
   border: '#483F53',
   banner: '#5F3E63',
   text: '#E0D7E5',
+  red: '#FF7777',
+  gray: '#A7A7A7',
 };
 
 export default colors;

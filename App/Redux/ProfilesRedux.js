@@ -8,7 +8,8 @@ const { Types, Creators } = createActions({
   profilesSuccess: ['payload'],
   failure: null,
   likeProfile: null,
-  likeSuccess: null,
+  dislikeProfile: null,
+  likeDislikeSuccess: null,
 });
 
 export const ProfilesTypes = Types;
@@ -37,7 +38,7 @@ const nextProfile = (state) => {
   const { currentProfileIndex, profilesList } = state;
   const newIndex = currentProfileIndex + 1;
 
-  if (currentProfileIndex < profilesList.length) {
+  if (currentProfileIndex < profilesList.length + 1) {
     return state.merge({
       currentProfileIndex: newIndex,
       currentProfile: profilesList[newIndex],
@@ -54,13 +55,14 @@ export const profileRequestReducer = state => state.merge({
 
 export const profileSuccessReducer = (state, action) => {
   const { payload } = action;
+  const initialIndex = 0;
 
   return state.merge({
     fetching: false,
     error: null,
     profilesList: payload,
-    currentProfileIndex: 0,
-    currentProfile: payload[state.currentProfileIndex],
+    currentProfileIndex: initialIndex,
+    currentProfile: payload[initialIndex],
   });
 };
 
@@ -70,9 +72,13 @@ export const likeRequestReducer = state => state.merge({
   fetching: true, id: state.currentProfile.id,
 });
 
-export const likeSuccessReducer = (state) => {
-  return nextProfile(state);
-};
+
+export const dislikeRequestReducer = state => state.merge({
+  fetching: true, id: state.currentProfile.id,
+});
+
+export const likeDislikeSuccessReducer = state => nextProfile(state);
+
 
 /* ------------- Hookup Reducers To Types ------------- */
 
@@ -81,5 +87,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.PROFILES_SUCCESS]: profileSuccessReducer,
   [Types.FAILURE]: failureReducer,
   [Types.LIKE_PROFILE]: likeRequestReducer,
-  [Types.LIKE_SUCCESS]: likeSuccessReducer,
+  [Types.LIKE_DISLIKE_SUCCESS]: likeDislikeSuccessReducer,
+  [Types.DISLIKE_PROFILE]: dislikeRequestReducer,
 });

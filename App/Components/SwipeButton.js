@@ -8,9 +8,10 @@ export default class SwipeButton extends Component {
     onPress: PropTypes.func,
     icon: PropTypes.string,
   }
-
+  
   render() {
     const { icon, onPress } = this.props;
+    
     const iconSettings = {
       name: icon,
       color: colors[icon],

@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 export const colors = {
-  favorites: '#FF7777',
+  favorite: '#FF7777',
   clear: '#A7A7A7',
 };
 

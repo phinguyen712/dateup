@@ -18,10 +18,23 @@ export function* getProfilesSaga(api, action) {
 
 export function* likeProfileSaga(api, action) {
   const { id } = action;
+
   const response = yield call(api.updateLikedProfile, id);
 
   if (response) {
-    yield put(ProfilesActions.likeSuccess());
+    yield put(ProfilesActions.likeDislikeSuccess());
+  } else {
+    yield put(ProfilesActions.failure());
+  }
+}
+
+export function* dislikeProfileSaga(api, action) {
+  const { id } = action;
+
+  const response = yield call(api.updateDislikeProfile, id);
+
+  if (response) {
+    yield put(ProfilesActions.likeDislikeSuccess());
   } else {
     yield put(ProfilesActions.failure());
   }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Image } from 'react-native';
+import Swiper from 'react-native-swiper';
 import { connect } from 'react-redux';
 import SlidingUpPanel from 'rn-sliding-up-panel';
 import PropTypes from 'prop-types';
@@ -25,19 +26,15 @@ class SwipingScreen extends Component {
     getProfiles: PropTypes.func.isRequired,
     likeProfile: PropTypes.func.isRequired,
     currentProfile: PropTypes.object,
+    dislikeProfile: PropTypes.func.isRequired,
   }
 
-  // constructor(props) {
-  //   super(props);
-  //   if (!props.currentProfile) {
-  //     props.getProfiles('userIDPlaceHere');
-  //   }
-  // }
+  handleLikePress = () => {
+    this.props.likeProfile();
+  }
 
-  componentDidMount() {
-    if (!this.props.currentProfile) {
-      this.props.getProfiles('userIDPlaceHere');
-    }
+  handleDislikePress = () => {
+    this.props.dislikeProfile();
   }
 
   snapPanelTop = (position) => {
@@ -54,8 +51,27 @@ class SwipingScreen extends Component {
     }
   }
 
-  handleLikePress = () => {
-    this.props.likeProfile();
+  returnImages() {
+    const { currentProfile } = this.props;
+    if (currentProfile && currentProfile.pictures) {
+      return this.props.currentProfile.pictures.map((picture, i) => {
+        return (
+          <View key={i}>
+            <Image
+              style={{ width: 500, height: 500 }}
+              source={{ uri: picture }}
+            />
+          </View>
+        );
+      });
+    }
+    return '';
+  }
+
+  retriveProfiles() {
+    if (!this.props.currentProfile) {
+      this.props.getProfiles('userIDPlaceHere');
+    }
   }
 
   renderProfileInfo() {
@@ -64,6 +80,7 @@ class SwipingScreen extends Component {
         <ProfileInfo
           currentProfile={this.props.currentProfile}
           handleLikePress={this.handleLikePress}
+          handleDislikePress={this.handleDislikePress}
         />
       );
     }
@@ -74,8 +91,13 @@ class SwipingScreen extends Component {
   }
 
   render() {
+    this.retriveProfiles();
     return (
       <View style={styles.background}>
+        {/* break this swiper to smaller component */}
+        <Swiper>
+          {this.returnImages()}
+        </Swiper>
         <SlidingUpPanel
           onDragEnd={this.snapPanelTop}
           visible
@@ -101,6 +123,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getProfiles: () => dispatch(ProfilesActions.profilesRequest()),
   likeProfile: () => dispatch(ProfilesActions.likeProfile()),
+  dislikeProfile: () => dispatch(ProfilesActions.dislikeProfile()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SwipingScreen);

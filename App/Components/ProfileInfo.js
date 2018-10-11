@@ -8,19 +8,33 @@ export default class ProfileInfo extends Component {
   static propTypes = {
     currentProfile: PropTypes.object.isRequired,
     handleLikePress: PropTypes.func,
+    handleDislikePress: PropTypes.func,
   }
 
   render() {
     const {
       handleLikePress,
-      currentProfile: { userName, height },
+      handleDislikePress,
+      currentProfile: {
+        userName,
+        height,
+        age,
+        distance,
+      },
     } = this.props;
+
     return (
       <View style={styles.container}>
-        <Text>{userName}</Text>
-        <Text>{height}</Text>
-        <SwipeButton onPress={handleLikePress} icon="clear" />
-        <SwipeButton onPress={handleLikePress} icon="favorite" />
+        <View>
+          <Text>{userName}</Text>
+          <Text>height {height}</Text>
+          <Text>age{age}</Text>
+          <Text>{distance} miles</Text>
+        </View>
+        <View style={styles.buttons}>
+          <SwipeButton onPress={handleDislikePress} icon="clear" />
+          <SwipeButton onPress={handleLikePress} icon="favorite" />
+        </View>
       </View>
     );
   }
